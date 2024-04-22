@@ -27,6 +27,7 @@ use OCA\TwoFactorGateway\Service\Gateway\Signal\Gateway as SignalGateway;
 use OCA\TwoFactorGateway\Service\Gateway\SMS\Gateway as SMSGateway;
 use OCA\TwoFactorGateway\Service\Gateway\Telegram\Gateway as TelegramGateway;
 use OCA\TwoFactorGateway\Service\Gateway\XMPP\Gateway as XMPPGateway;
+use OCA\TwoFactorGateway\Service\Gateway\SimaLife\Gateway as SimaLifeGateway;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -45,6 +46,9 @@ class Status extends Command {
 	/** @var XMPPGateway */
 	private $xmppGateway;
 
+    /** @var SimaLifeGateway */
+    private $SimaLifeGateway;
+
 	public function __construct(SignalGateway $signalGateway,
 		SMSGateway $smsGateway,
 		TelegramGateway $telegramGateway,
@@ -54,6 +58,7 @@ class Status extends Command {
 		$this->smsGateway = $smsGateway;
 		$this->telegramGateway = $telegramGateway;
 		$this->xmppGateway = $xmppGateway;
+        $this->SimaLifeGateway = $SimaLifeGateway;
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
@@ -65,6 +70,8 @@ class Status extends Command {
 		$output->writeln('Telegram gateway: ' . ($telegramConfigured ? 'configured' : 'not configured'));
 		$xmppConfigured = $this->xmppGateway->getConfig()->isComplete();
 		$output->writeln('XMPP gateway: ' . ($xmppConfigured ? 'configured' : 'not configured'));
+        $xmppConfigured = $this->SimaLifeGateway->getConfig()->isComplete();
+        $output->writeln('SimaLife gateway: ' . ($SimaLifeGateway ? 'configured' : 'not configured'));
 		return 0;
 	}
 }
